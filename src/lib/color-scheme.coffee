@@ -47,13 +47,14 @@ class ColorScheme
     345 : [ 229, 0,   102, 90 ]
 
   constructor: () ->
-    @colors = []
-    @colors.push(new ColorScheme.mutablecolor(60)) for [1..4]
+    colors = []
+    colors.push(new ColorScheme.mutablecolor(60)) for [1..4]
 
-    @scheme = 'mono'
-    @distance = 0.5
-    @web_safe = false
-    @add_complement = false
+    @col = colors
+    @_scheme = 'mono'
+    @_distance = 0.5
+    @_web_safe = false
+    @_add_complement = false
 
 
   ###
@@ -79,24 +80,24 @@ class ColorScheme
     h           = @col[0].get_hue()
 
     # Should these be fat arrows (=>) so that the @ refers to the right object?
-    dispatch =
-        mono     : () ->
-        contrast : () ->
+    dispatch = 
+        mono     : () =>
+        contrast : () =>
             used_colors = 2;
             @col[1].set_hue(@h)
             @col[1].rotate(180)
         
-        triade : () ->
+        triade : () =>
             used_colors = 3
-            dif = 60 * @distance
+            dif = 60 * @_distance
             @col[1].set_hue h
             @col[1].rotate 180 - dif
             @col[2].set_hue h
             @col[2].rotate 180 + dif
         
-        tetrade : () ->
+        tetrade : () =>
             used_colors = 4
-            dif = 90 * @distance
+            dif = 90 * @_distance
             @col[1].set_hue h
             @col[1].rotate 180
             @col[2].set_hue h
@@ -104,9 +105,12 @@ class ColorScheme
             @col[3].set_hue h
             @col[3].rotate dif
         
-        analogic : () ->
-            used_colors = if add_complement then 4 else 3
-            dif = 60 * @distance
+        analogic : () =>
+            used_colors = if @_add_complement then 4 else 3
+            dif = 60 * @_distance
+
+            # console.log "@col", @col
+
             @col[1].set_hue h
             @col[1].rotate dif
             @col[2].set_hue h
@@ -115,18 +119,18 @@ class ColorScheme
             @col[3].rotate 180
     
     # Alias for monochromatic
-    dispatch[monochromatic] = dispatch[mono]
+    dispatch['monochromatic'] = dispatch['mono']
 
-    if dispatch[@scheme]?
-        dispatch[@scheme]()
+    if dispatch[@_scheme]?
+        dispatch[@_scheme]()
     else
-        throw "Unknown color scheme name: #{@scheme}"
+        throw "Unknown color scheme name: #{@_scheme}"
 
     output = []
 
     for i in [0 .. used_colors - 1]
       for j in [0..3]
-        output[i * 4 + j] = @col[i].get_hex(@websafe, j)
+        output[i * 4 + j] = @col[i].get_hex(@_web_safe, j)
 
     return output
 
@@ -196,31 +200,30 @@ class ColorScheme
     rgbcap = /(..)(..)(..)/.exec(hex)[1..3]
     [r, g, b] = (parseInt(num, 16) for num in rgbcap)
 
-    rgb2hsv: (r, g, b) ->
-        
-        min = _.min [r, g, b]
-        max = _.max [r, g, b]
-        d = max - min
-        v = max
+    rgb2hsv = (r, g, b) ->
+      min = _.min [r, g, b]
+      max = _.max [r, g, b]
+      d = max - min
+      v = max
 
-        s
-        if ( d > 0 )
-          s = d / max
-        else
-          return [ 0, 0, v ]
+      s
+      if ( d > 0 )
+        s = d / max
+      else
+        return [ 0, 0, v ]
 
-        h = (
-          if (r is max) then ((g - b) / d)
-          else (
-            if (g is max) then (2 + (b - r) / d)
-            else (4 + (r - g) / d)
-          )
+      h = (
+        if (r is max) then ((g - b) / d)
+        else (
+          if (g is max) then (2 + (b - r) / d)
+          else (4 + (r - g) / d)
         )
+      )
 
-        h *= 60
-        h %= 360
+      h *= 60
+      h %= 360
 
-        return [h, s, v]
+      return [h, s, v]
 
     hsv = rgb2hsv( i / 255 for i in [r, g, b] )
     h0  = hsv[0]
@@ -245,8 +248,8 @@ class ColorScheme
           i2 = i
 
     if h2 == 0 or h2 > 360
-        h2 = 360
-        i2 = 360
+      h2 = 360
+      i2 = 360
 
     k = if ( h2 != h1 ) then ( h0 - h1 ) / ( h2 - h1 ) else 0
     h = Math.round( i1 + k * ( i2 - i1 ) )
@@ -260,9 +263,96 @@ class ColorScheme
     return this
 
 
+  ###
+
+  add_complement( BOOLEAN )
+
+  If BOOLEAN is true, an extra set of colors will be produced using the
+  complement of the selected color. 
+
+  This only works with the analogic color scheme. The default is false.
+
+  ###
+
+  add_complement: (b) ->
+      throw "add_complement needs an argument" if !b?
+      @_add_complement = b
+      return this
+
+  ###
+
+  web_safe( BOOL )
+
+  Sets whether the colors returned by L<"colors()"> or L<"colorset()"> will be
+  web-safe. 
+
+  The default is false.
+
+  ###
+
+  web_safe: (b) ->
+    throw "web_safe needs an argument" if !b?
+    @_web_safe = b
+    return this
+
+  ###
+
+  distance( FLOAT )
+
+  'FLOAT'> must be a value from 0 to 1. You might use this with the "triade"
+  "tetrade" or "analogic" color schemes.
+
+  The default is 0.5.
+
+  ###
+
+  distance: (d) ->
+      throw "distance needs an argument" if !d?
+      throw "distance(#{d}) - argument must be >= 0" if d < 0
+      throw "distance(#{d}) - argument must be <= 1" if d > 1
+      @_distance = d
+      return this
+
+  ###
+
+  scheme( name )
+
+  'name' must be a valid color scheme name. See "Color Schemes". The default
+  is "mono"
+
+  ###
+
+  scheme: (name) ->
+    throw "scheme needs an argument"          unless name?
+    throw "'#{name}' isn't a valid scheme name" unless ColorScheme.SCHEMES[name]?
+    @_scheme = name
+    return this
+
+  ###
+
+  variation( name )
+
+  'name' must be a valid color variation name. See "Color Variations" 
+
+  ###
+
+  variation: (v) ->
+    # console.log "variation(#{v})"
+    throw "variation needs an argument"       unless v?
+    throw "'$v' isn't a valid variation name" unless ColorScheme.PRESETS[v]?
+    @_set_variant_preset ColorScheme.PRESETS[v]
+    return this
+
+  _set_variant_preset: (p) ->
+    # console.log "_set_variant_preset(#{p})"
+    @col[i].set_variant_preset(p) for i in [0 .. 3]
 
 
-  # Class for mutable colors
+  # End ColorScheme class #
+
+
+
+  # Subclass for mutable colors #
   class @mutablecolor
     hue             : 0
     saturation      : []
@@ -275,6 +365,9 @@ class ColorScheme
     constructor: (@hue) ->
       throw "No hue specified" if !@hue?
 
+    get_hue: () ->
+      @hue
+
     set_hue: (h) ->
       avrg = (a, b, k) ->
         a + Math.round( ( b - a ) * k )
@@ -285,8 +378,8 @@ class ColorScheme
 
       derivative1 = @hue - Math.floor(d)
       derivative2 = ( derivative1 + 15 ) % 360
-      colorset1   = COLOR_WHEEL[derivative1]
-      colorset2   = COLOR_WHEEL[derivative2]
+      colorset1   = ColorScheme.COLOR_WHEEL[derivative1]
+      colorset2   = ColorScheme.COLOR_WHEEL[derivative2]
 
       en =
         red: 0
@@ -321,10 +414,12 @@ class ColorScheme
       return v
 
     set_variant: (variation, s, v) ->
-        @saturation[variation] = s
-        @value[variation]      = v
+      # console.log "set_variant(#{variation}, #{s}, #{v}) on #{this}"
+      @saturation[variation] = s
+      @value[variation]      = v
 
     set_variant_preset: (p) ->
+      # console.log "set_variant_preset(#{p})"
       @set_variant( i, p[ 2 * i ], p[ 2 * i + 1 ] ) for i in [0 .. 3]
 
     get_hex: (web_safe, variation) ->
@@ -344,8 +439,9 @@ class ColorScheme
           Math.round(c / 51) * 51
 
       format = ""
-      format += '%02x' for [1..rgb.length]
+      format += '%02s' for [1..rgb.length]
 
+      # console.log "sprintf #{format}, #{rgb}"
       return sprintf format, rgb
 
 

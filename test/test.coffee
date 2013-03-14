@@ -30,3 +30,18 @@ describe 'ColorScheme instance', ->
   scheme = new ColorScheme
   it 'should be a ColorScheme object', ->
     scheme.should.be instanceof ColorScheme
+
+
+
+scm = new ColorScheme
+
+scm.from_hex('ff0000')
+   .scheme('analogic')
+   .distance(0.3)
+   .add_complement(true)
+   .variation('pastel')
+   .web_safe(true)
+
+list = scm.colors()
+
+console.log list
