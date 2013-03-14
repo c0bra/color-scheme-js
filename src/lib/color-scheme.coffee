@@ -50,6 +50,7 @@ class ColorScheme
     @colors = []
     @colors.push(new ColorScheme.mutablecolor(60)) for [1..4]
 
+    @scheme = 'mono'
     @distance = 0.5
     @web_safe = false
     @add_complement = false
@@ -128,6 +129,136 @@ class ColorScheme
         output[i * 4 + j] = @col[i].get_hex(@websafe, j)
 
     return output
+
+  ###
+
+  colorset()
+
+  Returns a list of lists of the colors in groups of four. This method simply
+  allows you to reference a color in the scheme by its group isntead of its
+  absolute index in the list of colors.  I am assuming that "colorset()"
+  will make it easier to use this module with the templating systems that are
+  out there.
+
+  For example, if you were to follow the synopsis, say you wanted to retrieve
+  the two darkest colors from the first two groups of the scheme, which is
+  typically the second color in the group. You could retrieve them with
+  "colors()"
+
+      first_background  = (scheme.colors())[1];
+      second_background = (scheme.colors())[5];
+
+  Or, with this method,
+
+      first_background  = (scheme.colorset())[0][1]
+      second_background = (scheme.colorset())[1][1]
+
+  ###
+
+  colorset: () ->
+    flat_colors = _.cloneDeep @colors()
+    grouped_colors = []
+    grouped_colors.push(flat_colors.splice(0, 4)) while @flat_colors.length > 0
+    return grouped_colors
+
+
+  ###
+
+  from_hue( degrees )
+
+  Sets the base color hue, where 'degrees' is an integer. (Values greater than
+  359 and less than 0 wrap back around the wheel.)
+
+  The default base hue is 0, or bright red.
+
+  ###
+
+  from_hue: (h) ->
+      throw "variation needs an argument" if !h?
+      @col[0].set_hue h
+      return this # chaining
+
+  ###
+
+  from_hex( color )
+
+  Sets the base color to the given color, where 'color' is in the hexidecimal
+  form RRGGBB. 'color' should not be preceded with a hash (#).
+
+  The default base color is the equivalent of #ff0000, or bright red.
+
+  ###
+
+  from_hex: (hex) ->
+    throw "from_hex needs an argument" if !hex?
+    throw "from_hex(#{hex}) - argument must be in the form of RRGGBB" unless /// ^ ( [0-9A-F]{2} ) {3} $ ///im.test(hex)
+
+    rgbcap = /(..)(..)(..)/.exec(hex)[1..3]
+    [r, g, b] = (parseInt(num, 16) for num in rgbcap)
+
+    rgb2hsv: (r, g, b) ->
+        
+        min = _.min [r, g, b]
+        max = _.max [r, g, b]
+        d = max - min
+        v = max
+
+        s
+        if ( d > 0 )
+          s = d / max
+        else
+          return [ 0, 0, v ]
+
+        h = (
+          if (r is max) then ((g - b) / d)
+          else (
+            if (g is max) then (2 + (b - r) / d)
+            else (4 + (r - g) / d)
+          )
+        )
+
+        h *= 60
+        h %= 360
+
+        return [h, s, v]
+
+    hsv = rgb2hsv( i / 255 for i in [r, g, b] )
+    h0  = hsv[0]
+    h1  = 0
+    h2  = 1000
+    i1 = null
+    i2 = null
+    h = null
+    s = null
+    v = null
+
+    for i in _.keys(ColorScheme.COLOR_WHEEL).sort((a, b) -> a - b)
+      c = ColorScheme.COLOR_WHEEL[i]
+      
+      hsv1 = rgb2hsv( i / 255 for i in c[ 0 .. 2 ] )
+      h = hsv1[0]
+      if h >= h1 and h <= h0
+          h1 = h
+          i1 = i
+      if h <= h2 and h >= h0
+          h2 = h
+          i2 = i
+
+    if h2 == 0 or h2 > 360
+        h2 = 360
+        i2 = 360
+
+    k = if ( h2 != h1 ) then ( h0 - h1 ) / ( h2 - h1 ) else 0
+    h = Math.round( i1 + k * ( i2 - i1 ) )
+    h %= 360
+    s = hsv[1]
+    v = hsv[2]
+
+    @from_hue h
+    @_set_variant_preset( [ s, v, s, v * 0.7, s * 0.25, 1, s * 0.5, 1 ] )
+
+    return this
+
 
 
 
