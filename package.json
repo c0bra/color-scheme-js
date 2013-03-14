@@ -4,7 +4,7 @@
   "description": "Generate pleasant color schemes",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha --compilers coffee:coffee-script"
   },
   "repository": "",
   "keywords": [
@@ -21,6 +21,8 @@
     "lodash": ""
   },
   "devDependencies": {
-    "coffee-script": ""
+    "coffee-script": "",
+    "mocha": "",
+    "chai": ""
   }
 }
