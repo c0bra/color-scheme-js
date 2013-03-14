@@ -18,7 +18,8 @@
   "author": "Brian Hann",
   "license": "BSD",
   "dependencies": {
-    "lodash": ""
+    "lodash": "",
+    "sprintf": ""
   },
   "devDependencies": {
     "coffee-script": "",
