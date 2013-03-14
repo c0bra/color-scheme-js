@@ -1,0 +1,26 @@
+{
+  "name": "color-scheme",
+  "version": "0.0.0",
+  "description": "Generate pleasant color schemes",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": "",
+  "keywords": [
+    "color",
+    "scheme",
+    "generator",
+    "random",
+    "picker",
+    "web"
+  ],
+  "author": "Brian Hann",
+  "license": "BSD",
+  "dependencies": {
+    "lodash": ""
+  },
+  "devDependencies": {
+    "coffee-script": ""
+  }
+}
