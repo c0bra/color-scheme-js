@@ -4,6 +4,8 @@ Generate pleasant color schemes.
 
 This library is based on the perl module [Color::Scheme](http://search.cpan.org/~rjbs/Color-Scheme-1.04/lib/Color/Scheme.pm), which is in turn based on the [Color Scheme Designer website](http://colorschemedesigner.com/).
 
+Check out [examples](http://c0bra.github.com/color-scheme-js/) of how it works.
+
 ## Description
 
 This module is a JavaScript implementation of the Perl implementation of Color Schemes
