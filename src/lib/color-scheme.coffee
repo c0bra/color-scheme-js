@@ -1,6 +1,5 @@
 
 _ = require 'lodash'
-vsprintf = require('sprintf').vsprintf;
 
 class ColorScheme
   # Helper function to split words up
@@ -450,11 +449,16 @@ class ColorScheme
         rgb = _.map rgb, (c) ->
           Math.round(c / 51) * 51
 
-      format = ""
-      format += '%02x' for [1..rgb.length]
+      formatted = ""
+      for i in rgb
+        str = i.toString(16)
+        if str.length < 2
+          str = "0"+str
 
-      # console.log "vsprintf #{format}, #{rgb}"
-      return vsprintf format, rgb
+        formatted += str
+
+
+      return formatted
 
 
 # root = exports ? window
