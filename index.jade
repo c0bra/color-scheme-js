@@ -92,7 +92,8 @@ head
               .row
                 .span12
                   strong.span1.pull-left Distance
-                  #distance-slider.span5
+                  #distance-slider.span5 
+                  small(style="padding-left: 20px") (won't affect mono or contrast)
               .row: &nbsp;
               .row
                 .span12
@@ -105,6 +106,13 @@ head
                     button.btn(type='button', data-toggle='button', onclick='setVariation("light")') Light
                     button.btn(type='button', data-toggle='button', onclick='setVariation("hard")') Hard
                     button.btn(type='button', data-toggle='button', onclick='setVariation("pale")') Pale
+              .row: &nbsp;
+              .row
+                .span12
+                  strong.span1.pull-left Web Safe
+                  .btn-group(data-toggle="buttons-radio")
+                    button.btn(data-toggle='button', onclick='setWebSafe(true)') Yes
+                    button.btn.active(data-toggle='button', onclick='setWebSafe(false)') No
       .row: &nbsp;
       .row
         .span12
@@ -139,7 +147,7 @@ head
           min: 0,
           max: 1,
           value: 0.5,
-          step: 100,
+          step: 0.01,
           slide: function(e, ui) {
             // ui.value has the number
             setDistance(ui.value)
@@ -202,3 +210,10 @@ head
         scheme.variation(variation);
         generateColors();
       }
+
+      function setWebSafe(websafe) {
+        scheme.web_safe(websafe);
+        generateColors();
+      }
+
+      

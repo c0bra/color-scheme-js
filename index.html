@@ -78,7 +78,7 @@
             <div class="row">&nbsp;</div>
             <div class="row">
               <div class="span12"><strong class="span1 pull-left">Distance</strong>
-                <div id="distance-slider" class="span5"></div>
+                <div id="distance-slider" class="span5"> </div><small style="padding-left: 20px">(won't affect mono or contrast)</small>
               </div>
             </div>
             <div class="row">&nbsp;</div>
@@ -91,6 +91,15 @@
                   <button type="button" data-toggle="button" onclick="setVariation(&quot;light&quot;)" class="btn">Light</button>
                   <button type="button" data-toggle="button" onclick="setVariation(&quot;hard&quot;)" class="btn">Hard</button>
                   <button type="button" data-toggle="button" onclick="setVariation(&quot;pale&quot;)" class="btn">Pale</button>
+                </div>
+              </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="span12"><strong class="span1 pull-left">Web Safe</strong>
+                <div data-toggle="buttons-radio" class="btn-group">
+                  <button data-toggle="button" onclick="setWebSafe(true)" class="btn">Yes</button>
+                  <button data-toggle="button" onclick="setWebSafe(false)" class="btn active">No</button>
                 </div>
               </div>
             </div>
@@ -130,7 +139,7 @@
         min: 0,
         max: 1,
         value: 0.5,
-        step: 100,
+        step: 0.01,
         slide: function(e, ui) {
           // ui.value has the number
           setDistance(ui.value)
@@ -193,5 +202,11 @@
       scheme.variation(variation);
       generateColors();
     }
+    
+    function setWebSafe(websafe) {
+      scheme.web_safe(websafe);
+      generateColors();
+    }
+    
   </script>
 </body>
