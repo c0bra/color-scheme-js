@@ -30,7 +30,14 @@
 <body ng-app><a href="https://github.com/c0bra/color-scheme-js" class="hidden-phone"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-      <div class="container"><a href="#" class="brand">color-scheme.js</a>
+      <div class="container">
+        <button type="button" data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="brand">color-scheme.js</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li><a href="#example">Example</a></li>
+            <li><a href="#tryit">Try it!</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -51,7 +58,26 @@
     </div>
     <div class="row">
       <div class="span12">
-        <h2>Example</h2>
+        <h2 id="example">Example</h2>
+        <pre>scm = new ColorScheme;
+scm.from_hue(21)
+   .scheme('triade')
+   .distance(0.1)
+   .add_complement(false)
+   .variation('pastel')
+   .web_safe(true);
+   
+var colors = scm.colors();
+
+console.log(colors);
+
+# [ 'ff9966', '996633', 'ffcccc', 'cc6633', '669966', '339966', 'ccffcc', '33cc99', '339999', '339966', 'ccffcc', '33cc99' ]
+</pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span12">
+        <h2 id="tryit">Try it!</h2>
       </div>
       <div class="row">
         <div class="span12">
@@ -78,7 +104,7 @@
             <div class="row">&nbsp;</div>
             <div class="row">
               <div class="span12"><strong class="span1 pull-left">Distance</strong>
-                <div id="distance-slider" class="span5"> </div><small style="padding-left: 20px">(won't affect mono or contrast)</small>
+                <div id="distance-slider" class="span5"> </div><span id="distance"></span><small style="padding-left: 20px">(won't affect mono or contrast)</small>
               </div>
             </div>
             <div class="row">&nbsp;</div>
@@ -115,6 +141,17 @@
       <div class="row span12">
         <div id="colors"></div>
         <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+      <div class="span12">
+        <h3>Todo</h3>
+        <p>
+          The code is translated but all the docs and tests need to be written/copied. Hang tight!
+          
+          
+        </p>
       </div>
     </div>
   </div>
@@ -208,5 +245,10 @@
       generateColors();
     }
     
+    function randomHue() {
+      var h = Math.round(Math.random() * 360);
+      scheme.from_hue(h);
+      generateColors();
+    }
   </script>
 </body>

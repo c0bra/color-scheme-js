@@ -38,11 +38,11 @@ describe 'ColorScheme instance', ->
 scm = new ColorScheme
 
 scm.from_hue(21)
-#   .scheme('triade')
-#   .distance(0.1)
-   .add_complement(false)
-#   # .variation('pastel')
-#   # .web_safe(true)
+  .scheme('triade')
+  .distance(0.1)
+  .add_complement(false)
+  .variation('pastel')
+  .web_safe(true)
 
 # # console.log eyes.inspect(scm)
 
