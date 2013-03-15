@@ -2,11 +2,18 @@
   "name": "color-scheme",
   "version": "0.0.0",
   "description": "Generate pleasant color schemes",
-  "main": "index.js",
+  "main": "lib/color-scheme.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script"
+    "test": "mocha --compilers coffee:coffee-script",
+    "prepublish": "cake build"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/c0bra/color-scheme-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/c0bra/color-scheme-js/issues"
+  },
   "keywords": [
     "color",
     "scheme",
