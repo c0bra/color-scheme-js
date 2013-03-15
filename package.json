@@ -1,6 +1,6 @@
 {
   "name": "color-scheme",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Generate pleasant color schemes",
   "main": "lib/color-scheme.js",
   "scripts": {
@@ -24,8 +24,7 @@
   ],
   "author": "Brian Hann",
   "license": "BSD",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "coffee-script": "",
     "uglify-js": "",
