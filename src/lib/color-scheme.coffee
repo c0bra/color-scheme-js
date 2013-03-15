@@ -1,6 +1,6 @@
 
 _ = require 'lodash'
-sprintf = require('sprintf').sprintf;
+vsprintf = require('sprintf').vsprintf;
 
 class ColorScheme
   # Helper function to split words up
@@ -362,8 +362,19 @@ class ColorScheme
     base_saturation : 0
     base_value      : 0
 
-    constructor: (@hue) ->
-      throw "No hue specified" if !@hue?
+    constructor: (hue) ->
+      throw "No hue specified" if !hue?
+
+      @saturation      = []
+      @value           = []
+      @base_red        = 0
+      @base_green      = 0
+      @base_blue       = 0
+      @base_saturation = 0
+      @base_value      = 0
+      @set_hue hue
+
+      @set_variant_preset ColorScheme.PRESETS['default']
 
     get_hue: () ->
       @hue
@@ -388,11 +399,11 @@ class ColorScheme
         value: 3
 
       # while ( my ( $color, $i ) = each %enum ) {
-      _.each en, (i, color) ->
+      _.each en, (i, color) =>
           this["base_#{color}"] = avrg( colorset1[i], colorset2[i], k )
 
       @base_saturation = avrg( 100, 100, k ) / 100
-      @base_value /= 100;
+      @base_value /= 100
 
     # Rotate the hue a certain number of degrees
     rotate: (angle) ->
@@ -431,18 +442,19 @@ class ColorScheme
       s = if variation < 0 then @base_saturation else @get_saturation(variation)
       k = if max > 0 then v / max else 0
 
-      rgb = _.map ['red', 'green', 'blue'], (color) ->
-        return _.min 255, Math.round(v - ( v - this["base_#{color}"] * k ) * s)
+      rgb = _.map ['red', 'green', 'blue'], (color) =>
+        rgbVal = _.min [ 255, Math.round(v - ( v - this["base_#{color}"] * k ) * s) ]
+        return rgbVal
 
       if web_safe
         rgb = _.map rgb, (c) ->
           Math.round(c / 51) * 51
 
       format = ""
-      format += '%02s' for [1..rgb.length]
+      format += '%02x' for [1..rgb.length]
 
-      # console.log "sprintf #{format}, #{rgb}"
-      return sprintf format, rgb
+      # console.log "vsprintf #{format}, #{rgb}"
+      return vsprintf format, rgb
 
 
 # root = exports ? window
