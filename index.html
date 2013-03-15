@@ -2,49 +2,196 @@
 <html lang="en"></html>
 <head>
   <meta charset="utf-8">
-  <title>color-theme.js</title>
+  <title>color-scheme.js</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="color-theme.js - generate pleasant color schemes in JavaScript">
+  <meta name="description" content="color-scheme.js - generate pleasant color schemes in JavaScript">
   <meta name="author" content="Brian Hann">
   <style>
     body {
-    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    }
+    .color {
+      height: 50px;
+      width: 50px;
+      float: left;
+      margin: 5px;
+      border: 1px solid #ccc;
+    }
+    #hue-box {
+      margin-left: 20px;
+      margin-top: -19px;
     }
   </style>
   <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/css/smoothness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements --><!--[if lt IE 9]>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script><![endif]-->
 </head>
-<body><a href="https://github.com/c0bra/color-scheme-js" class="hidden-phone"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+<body ng-app><a href="https://github.com/c0bra/color-scheme-js" class="hidden-phone"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-      <div class="container"><a href="#" class="brand">color-theme.js</a><!--/.nav-collapse -->
+      <div class="container"><a href="#" class="brand">color-scheme.js</a>
       </div>
     </div>
   </div>
   <div class="container">
-    <h1>color-scheme.js</h1>
-    <p>Generate nice, pretty color schemes with JavaScript.</p><br>
-    <h2>Examples
-      <div class="row">
-        <div id="blah"></div>
+    <div class="row">
+      <div class="span12">
+        <div class="row">
+          <div class="span12">
+            <h1>color-scheme.js</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span12">
+            <p>Generate nice, pretty color schemes with JavaScript.</p>
+          </div>
+        </div>
       </div>
-    </h2>
+    </div>
+    <div class="row">
+      <div class="span12">
+        <h2>Example</h2>
+      </div>
+      <div class="row">
+        <div class="span12">
+          <div class="offset1">
+            <div class="row">
+              <div class="span12"><strong class="span1 pull-left">Hue</strong>
+                <div id="hue-slider" class="span5"></div>
+                <div id="hue-box" style="background-color: #ffffff" class="color middle"></div>
+              </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="span12"><strong class="span1">Scheme</strong>
+                <div data-toggle="buttons-radio" class="btn-group">
+                  <button type="button" data-toggle="button" onclick="setScheme(&quot;monochromatic&quot;)" class="btn active">Monochromatic</button>
+                  <button type="button" data-toggle="button" onclick="setScheme(&quot;contrast&quot;)" class="btn">Contrast</button>
+                  <button type="button" data-toggle="button" onclick="setScheme(&quot;triade&quot;)" class="btn">Triade</button>
+                  <button type="button" data-toggle="button" onclick="setScheme(&quot;tetrade&quot;)" class="btn">Tetrade</button>
+                  <button type="button" data-toggle="button" onclick="setScheme(&quot;analogic&quot;)" class="btn">Analogic</button>
+                </div>
+                <button id="add-complement" type="button" data-toggle="button" class="btn hide">Add Complement</button>
+              </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="span12"><strong class="span1 pull-left">Distance</strong>
+                <div id="distance-slider" class="span5"></div>
+              </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="span12"><strong class="span1 pull-left">Variation</strong>
+                <div data-toggle="buttons-radio" class="btn-group">
+                  <button type="button" data-toggle="button" onclick="setVariation(&quot;default&quot;)" class="btn active">Default</button>
+                  <button type="button" data-toggle="button" onclick="setVariation(&quot;pastel&quot;)" class="btn">Pastel</button>
+                  <button type="button" data-toggle="button" onclick="setVariation(&quot;soft&quot;)" class="btn">Soft</button>
+                  <button type="button" data-toggle="button" onclick="setVariation(&quot;light&quot;)" class="btn">Light</button>
+                  <button type="button" data-toggle="button" onclick="setVariation(&quot;hard&quot;)" class="btn">Hard</button>
+                  <button type="button" data-toggle="button" onclick="setVariation(&quot;pale&quot;)" class="btn">Pale</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+      <div class="span12">
+        <h4>Generated Colors</h4>
+      </div>
+      <div class="row span12">
+        <div id="colors"></div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
   </div>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.4.0/coffee-script.min.js"></script>
-  <script src="src/lib/color-scheme.coffee" type="text/coffeescript"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+  <script src="lib/color-scheme.min.js"></script>
   <script>
-    console.log("C", window.ColorScheme);
-    
+    //- console.log("C", ColorScheme);
+    var scheme = null;
     $(document).ready(function(){
-      console.log("C", ColorScheme);
-      var scheme = new ColorScheme;
+      $("#hue-slider").slider({
+        min: 0,
+        max: 360,
+        slide: function(e, ui) {
+          // ui.value has the number
+          setHue(ui.value)
+        }
+      });
       
-      //- $('#blah').text( scheme.colors() );
-      //- console.log( scheme.colors() );
+      $("#distance-slider").slider({
+        min: 0,
+        max: 1,
+        value: 0.5,
+        step: 100,
+        slide: function(e, ui) {
+          // ui.value has the number
+          setDistance(ui.value)
+        }
+      });
       
+      scheme = new ColorScheme;
+      setHue(0);
+      generateColors();
+      
+      $('#add-complement').click(addComplement);
     });
+    
+    function generateColors() {
+      $('#colors').html('');
+      var colors = scheme.colors();
+      for (var i in colors) {
+        var c = colors[i];
+        var newDiv = '<div class="color" style="background-color: #' + c + '"></div>';
+        $('#colors').append(newDiv);
+      }
+    }
+    
+    function setHue(hue) {
+      scheme.from_hue(hue);
+      
+      var bg = scheme.colors()[0];
+      $('#hue-box').attr('style', 'background-color: #' + bg);
+      
+      generateColors();
+    }
+    
+    function setScheme(newScheme) {
+      if (newScheme == 'analogic') {
+        $('#add-complement').show();
+      }
+      else {
+       $('#add-complement').hide(); 
+      }
+      scheme.scheme(newScheme);
+      generateColors();
+    }
+    
+    function addComplement() {
+      if ( $('#add-complement').hasClass('active') ) {
+        scheme.add_complement(false);
+      }
+      else {
+        scheme.add_complement(true);
+      }
+      generateColors();
+    }
+    
+    function setDistance(distance) {
+      scheme.distance(distance);
+      generateColors();
+    }
+    
+    function setVariation(variation) {
+      scheme.variation(variation);
+      generateColors();
+    }
   </script>
 </body>

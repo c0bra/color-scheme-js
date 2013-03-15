@@ -35,16 +35,16 @@ describe 'ColorScheme instance', ->
 
 
 
-# scm = new ColorScheme
+scm = new ColorScheme
 
-# scm.from_hue(21)
+scm.from_hue(21)
 #   .scheme('triade')
 #   .distance(0.1)
-#   .add_complement(true)
+   .add_complement(false)
 #   # .variation('pastel')
 #   # .web_safe(true)
 
 # # console.log eyes.inspect(scm)
 
-# list = scm.colors()
-# console.log list
+list = scm.colors()
+console.log list

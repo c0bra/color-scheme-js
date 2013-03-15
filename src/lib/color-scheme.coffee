@@ -81,7 +81,7 @@ class ColorScheme
         mono     : () =>
         contrast : () =>
             used_colors = 2;
-            @col[1].set_hue(@h)
+            @col[1].set_hue h
             @col[1].rotate(180)
         
         triade : () =>
@@ -480,7 +480,11 @@ class ColorScheme
 
       return formatted
 
-if module?
+if module? and module.exports?
   module.exports = ColorScheme
 else
-  window.ColorScheme = ColorScheme
+  if typeof define == 'function' and define.amd
+    define [], () ->
+      return ColorScheme
+  else
+    window.ColorScheme = ColorScheme
