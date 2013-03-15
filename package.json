@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "coffee-script": "",
+    "uglify-js": "",
     "mocha": "",
     "chai": ""
   }

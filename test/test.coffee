@@ -3,8 +3,8 @@ eyes = require 'eyes'
 chai = require 'chai'
 chai.should()
 
-#ColorScheme = require '../src/lib/color-scheme'
-ColorScheme = require '../lib/color-scheme'
+ColorScheme = require '../src/lib/color-scheme'
+#ColorScheme = require '../lib/color-scheme.min'
 
 describe 'ColorScheme class', ->
   describe 'SCHEMES Object', ->
@@ -35,16 +35,16 @@ describe 'ColorScheme instance', ->
 
 
 
-scm = new ColorScheme
+# scm = new ColorScheme
 
-scm.from_hex('ff0000')
-  .scheme('analogic')
-  .distance(0.3)
-  .add_complement(true)
-  .variation('pastel')
-  .web_safe(true)
+# scm.from_hue(21)
+#   .scheme('triade')
+#   .distance(0.1)
+#   .add_complement(true)
+#   # .variation('pastel')
+#   # .web_safe(true)
 
-# console.log eyes.inspect(scm)
+# # console.log eyes.inspect(scm)
 
-list = scm.colors()
-console.log list
+# list = scm.colors()
+# console.log list

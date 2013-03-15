@@ -480,7 +480,7 @@ class ColorScheme
 
       return formatted
 
-
-# root = exports ? window
-# root.ColorScheme = ColorScheme
-module.exports = ColorScheme
+if module?
+  module.exports = ColorScheme
+else
+  window.ColorScheme = ColorScheme

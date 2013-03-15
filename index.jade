@@ -46,18 +46,21 @@ head
 
       h2 Examples
         .row
-          
+          #blah
 
-
-    
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.4.0/coffee-script.min.js')
+    script(src='src/lib/color-scheme.coffee', type="text/coffeescript")
     script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js')
     script(src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js')
-    script(src='http://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.4.0/coffee-script.min.js')
-    script(src='http://raw.github.com/c0bra/color-scheme-js/master/src/lib/color-scheme.coffee',  type="text/coffeescript")
     
-    //- script
-    //-   $(document).ready(function(){
+    script
+      console.log("C", window.ColorScheme);
 
-    //-     scheme = new Color
+      $(document).ready(function(){
+        console.log("C", ColorScheme);
+        var scheme = new ColorScheme;
 
-    //-   });
+        //- $('#blah').text( scheme.colors() );
+        //- console.log( scheme.colors() );
+
+      });

@@ -26,11 +26,25 @@
     <h1>color-scheme.js</h1>
     <p>Generate nice, pretty color schemes with JavaScript.</p><br>
     <h2>Examples
-      <div class="row"></div>
+      <div class="row">
+        <div id="blah"></div>
+      </div>
     </h2>
   </div>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.4.0/coffee-script.min.js"></script>
+  <script src="src/lib/color-scheme.coffee" type="text/coffeescript"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.4.0/coffee-script.min.js"></script>
-  <script src="http://raw.github.com/c0bra/color-scheme-js/master/src/lib/color-scheme.coffee" type="text/coffeescript"></script>
+  <script>
+    console.log("C", window.ColorScheme);
+    
+    $(document).ready(function(){
+      console.log("C", ColorScheme);
+      var scheme = new ColorScheme;
+      
+      //- $('#blah').text( scheme.colors() );
+      //- console.log( scheme.colors() );
+      
+    });
+  </script>
 </body>
