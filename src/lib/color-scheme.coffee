@@ -1,6 +1,4 @@
 
-_ = require 'lodash'
-
 class ColorScheme
   # Helper function to split words up
   splitwords = (words) ->
@@ -159,9 +157,9 @@ class ColorScheme
   ###
 
   colorset: () ->
-    flat_colors = _.cloneDeep @colors()
+    flat_colors = clone @colors()
     grouped_colors = []
-    grouped_colors.push(flat_colors.splice(0, 4)) while @flat_colors.length > 0
+    grouped_colors.push(flat_colors.splice(0, 4)) while flat_colors.length > 0
     return grouped_colors
 
 
@@ -200,8 +198,8 @@ class ColorScheme
     [r, g, b] = (parseInt(num, 16) for num in rgbcap)
 
     rgb2hsv = (r, g, b) ->
-      min = _.min [r, g, b]
-      max = _.max [r, g, b]
+      min = Math.min [r, g, b]...
+      max = Math.max [r, g, b]...
       d = max - min
       v = max
 
@@ -234,7 +232,8 @@ class ColorScheme
     s = null
     v = null
 
-    for i in _.keys(ColorScheme.COLOR_WHEEL).sort((a, b) -> a - b)
+    wheelKeys = []; wheelKeys.push i for own i of COLOR_WHEEL
+    for i of wheelKeys.sort( (a, b) -> a - b )
       c = ColorScheme.COLOR_WHEEL[i]
       
       hsv1 = rgb2hsv( i / 255 for i in c[ 0 .. 2 ] )
@@ -346,6 +345,27 @@ class ColorScheme
     # console.log "_set_variant_preset(#{p})"
     @col[i].set_variant_preset(p) for i in [0 .. 3]
 
+  clone = (obj) ->
+    if not obj? or typeof obj isnt 'object'
+      return obj
+
+    if obj instanceof Date
+      return new Date(obj.getTime()) 
+
+    if obj instanceof RegExp
+      flags = ''
+      flags += 'g' if obj.global?
+      flags += 'i' if obj.ignoreCase?
+      flags += 'm' if obj.multiline?
+      flags += 'y' if obj.sticky?
+      return new RegExp(obj.source, flags) 
+
+    newInstance = new obj.constructor()
+
+    for key of obj
+      newInstance[key] = clone obj[key]
+
+    return newInstance
 
   # End ColorScheme class #
 
@@ -398,7 +418,7 @@ class ColorScheme
         value: 3
 
       # while ( my ( $color, $i ) = each %enum ) {
-      _.each en, (i, color) =>
+      for color, i of en
           this["base_#{color}"] = avrg( colorset1[i], colorset2[i], k )
 
       @base_saturation = avrg( 100, 100, k ) / 100
@@ -433,21 +453,21 @@ class ColorScheme
       @set_variant( i, p[ 2 * i ], p[ 2 * i + 1 ] ) for i in [0 .. 3]
 
     get_hex: (web_safe, variation) ->
-      max = _.max( this["base_#{color}"] for color in ['red', 'green', 'blue'] )
-      min = _.min( this["base_#{color}"] for color in ['red', 'green', 'blue'] )
+      max = Math.max ( this["base_#{color}"] for color in ['red', 'green', 'blue'] )...
+      min = Math.min ( this["base_#{color}"] for color in ['red', 'green', 'blue'] )...
 
       v = ( if variation < 0 then @base_value else @get_value(variation) ) * 255
 
       s = if variation < 0 then @base_saturation else @get_saturation(variation)
       k = if max > 0 then v / max else 0
 
-      rgb = _.map ['red', 'green', 'blue'], (color) =>
-        rgbVal = _.min [ 255, Math.round(v - ( v - this["base_#{color}"] * k ) * s) ]
-        return rgbVal
+      rgb = []
+      for color in ['red', 'green', 'blue']
+        rgbVal = Math.min [ 255, Math.round(v - ( v - this["base_#{color}"] * k ) * s) ]...
+        rgb.push rgbVal
 
       if web_safe
-        rgb = _.map rgb, (c) ->
-          Math.round(c / 51) * 51
+        rgb = ( Math.round(c / 51) * 51 for c in rgb )
 
       formatted = ""
       for i in rgb
