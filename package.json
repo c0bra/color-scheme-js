@@ -1,6 +1,6 @@
 {
   "name": "color-scheme",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Generate pleasant color schemes",
   "main": "lib/color-scheme.js",
   "scripts": {
