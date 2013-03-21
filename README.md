@@ -9,7 +9,7 @@ Check out [how it works](http://c0bra.github.com/color-scheme-js/).
 - [Description](#description)
 - [Usage](#usage)
 - [Schemes](#schemes)
-  - [mono](#mono)
+  - [mono](#mono-monochromatic)
   - [contrast](#contrast)
   - [triade](#triade)
   - [tetrade](#tetrade)
