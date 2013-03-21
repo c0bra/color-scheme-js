@@ -122,7 +122,7 @@ Contrast supplements the selected hue with its complement (the color opposite it
 
 Triade takes the selected hue and adds two more source colors that are both a certain distance from the initial hue.
 
-The ```distance()``` method can be used to specify how far 
+The [distance()](#distancefloat) method can be used to specify how far additional source colors will be from the initial hue.
 
 12 colors will be produced.
 
@@ -136,7 +136,7 @@ Tetrade adds another yet source color, meaning four total sources.
 
 Analogic produces colors that are "analogous", or next to each other on the color wheel.
 
-Increasing the distance ```distance()``` will push the colors away from each other. *"Values between 0.25 and 0.5 (15-30 degrees on the wheel) are optimal."*
+Increasing the distance [distance()](#distancefloat) will push the colors away from each other. *"Values between 0.25 and 0.5 (15-30 degrees on the wheel) are optimal."*
 
 12 colors will be produced.
 
