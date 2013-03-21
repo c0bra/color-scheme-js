@@ -6,6 +6,8 @@ This library is based on the perl module [Color::Scheme](http://search.cpan.org/
 
 Check out [how it works](http://c0bra.github.com/color-scheme-js/).
 
+## Table of Contents
+
 - [Description](#description)
 - [Usage](#usage)
 - [Schemes](#schemes)
