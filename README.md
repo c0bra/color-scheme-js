@@ -140,7 +140,7 @@ Increasing the distance [distance()](#distancefloat) will push the colors away f
 
 12 colors will be produced.
 
-Additionally, the ```complement()``` method can be used to add complementary colors (i.e. those that are opposite the source colors on the color wheel). This will result in 16 colors. *"It must be treated only as a complement - it adds tension to the palette, and it's too aggressive when overused. However, used in details and as accent of main colors, it can be very effective and elegant."*
+Additionally, the [complement()](#complementbool) method can be used to add complementary colors (i.e. those that are opposite the source colors on the color wheel). This will result in 16 colors. *"It must be treated only as a complement - it adds tension to the palette, and it's too aggressive when overused. However, used in details and as accent of main colors, it can be very effective and elegant."*
 
 ## Variations
 
