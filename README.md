@@ -44,14 +44,16 @@ npm install color-scheme
     scheme.from_hue(21)         // Start the scheme 
           .scheme('triade')     // Use the 'triade' scheme, that is, colors
                                 // selected from 3 points equidistant around
-                                // the color wheel
-
-          .variation('pastel')  // Use the 'soft' color variation
-
+                                // the color wheel.
+          .variation('soft');   // Use the 'soft' color variation
 
     var colors = scheme.colors();
 
-    # colors = [ "e69373" , "805240" , "e6d5cf" , "bf5830" , "77d36a" , "488040" , "d2e6cf" , "43bf30" , "557aaa" , "405c80" , "cfd9e6" , "306ebf" ]
+    /*
+      colors = [ "e69373", "805240", "e6d5cf", "bf5830" ,
+                 "77d36a", "488040", "d2e6cf", "43bf30" ,
+                 "557aaa", "405c80", "cfd9e6", "306ebf" ]
+    */
 
 ### In the browser
 
@@ -60,17 +62,18 @@ npm install color-scheme
     <script>
       // Pretty much the same exact syntax!
       var scheme = new ColorScheme;
-      scheme.from_hue(21)         // Start the scheme 
-            .scheme('triade')     // Use the 'triade' scheme, that is, colors
-                                  // selected from 3 points equidistant around
-                                  // the color wheel
-
-            .variation('pastel')  // Use the 'soft' color variation
+      scheme.from_hue(21)         
+            .scheme('triade')   
+            .variation('soft');
 
 
       var colors = scheme.colors();
 
-      # colors = [ "e69373" , "805240" , "e6d5cf" , "bf5830" , "77d36a" , "488040" , "d2e6cf" , "43bf30" , "557aaa" , "405c80" , "cfd9e6" , "306ebf" ]
+      /*
+        colors = [ "e69373", "805240", "e6d5cf", "bf5830" ,
+                   "77d36a", "488040", "d2e6cf", "43bf30" ,
+                   "557aaa", "405c80", "cfd9e6", "306ebf" ]
+      */
     <script>
 
 ## Schemes
@@ -81,23 +84,83 @@ There are five color schemes.
 
 The monochromatic scheme is based on selecting a single hue on the color wheel, then adding more colors by varying the source color's saturation and brightness.
 
+Four colors will be produced.
+
 ### contrast
 
 Contrast supplements the selected hue with its complement (the color opposite it on the color wheel) as another source color.
 
+8 colors will be produced.
+
 ### triade
 
-Triade takes the selected hue and adds two more source colors that are equidistant around the color wheel, i.e. each source color is 120 degrees away from the others.
+Triade takes the selected hue and adds two more source colors that are both a certain distance from the initial hue.
+
+The ```distance()``` method can be used to specify how far 
+
+12 colors will be produced.
+
+### tetrade
+
+Tetrade adds another yet source color, meaning four total sources.
+
+16 colors will be produced.
+
+### analogic
+
+Analogic produces colors that are "analogous", or next to each other on the color wheel.
+
+Increasing the distance ```distance()``` will push the colors away from each other. *"Values between 0.25 and 0.5 (15-30 degrees on the wheel) are optimal."*
+
+12 colors will be produced.
+
+Additionally, the ```complement()``` method can be used to add complementary colors (i.e. those that are opposite the source colors on the color wheel). This will result in 16 colors. *"It must be treated only as a complement - it adds tension to the palette, and it's too aggressive when overused. However, used in details and as accent of main colors, it can be very effective and elegant."*
 
 ## Variations
 
 These variations will alter the produced colors. They basically work exactly like filters would in any image editing program.
 
+### default
+
+The default variation. No change to the colors.
+
+    s.variation('default');
+
+### pastel
+
+Produces pastel colors, which have in HSV high value and low-intermediate saturation.
+
+    s.variation('pastel');
+
+### soft
+
+Produces darker pastel colors.
+
+    s.variation('soft');
+
+### light
+
+Very light, almost washed-out colors.
+
+    s.variation('light');
+
+### hard
+
+Deeper, very saturated colors.
+
+    s.variation('hard');
+
+### pale
+
+Colors with more gray; less saturated.
+
+    s.variation('pale');
+
 ## Methods
 
 ColorScheme instances use method chaining to alter settings.
 
-### .scheme([scheme_name])
+### scheme([scheme_name])
 
 Set the scheme to [scheme_name]. The possible values are 'mono', 'contrast', 'triade', 'tetrade', and 'analogic'.
 
@@ -105,3 +168,28 @@ Set the scheme to [scheme_name]. The possible values are 'mono', 'contrast', 'tr
 
     // Set the scheme to analogic
     s.scheme('analogic');
+
+### distance([float])
+
+**Note:** Only works with the schemes 'triade', 'tetrade', and 'analogic'. (Because 'mono' only has one source color, and with 'contrast' the two source colors are always 180 degrees away from each other.)
+
+This method sets the distance of the additional source colors from the initial hue. The value must be a float from 0 to 1.
+
+    var s = new ColorScheme;
+    var colors = s.scheme('triade')
+     .distance(0.75)
+     .colors();
+
+    # colors = [ "ff9900", "b36b00", "ffe6bf", "ffcc80",
+                 "00b366", "007d48", "bfffe4", "80ffc9",
+                 "400099", "2d006b", "dabfff", "b580ff" ]
+
+### complement([bool])
+
+Add complementary colors to the ```analogic``` scheme. Does not work with any other scheme.
+
+### colors()
+
+Returns the array of generated colors as hex values.
+
+**Note:** Because this method returns the colors, it obviously *cannot* be chained afterwards.
