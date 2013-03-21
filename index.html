@@ -21,6 +21,17 @@
       margin-left: 20px;
       margin-top: -19px;
     }
+    
+    .bordered {
+      border-top: 1px solid #ccc;
+    }
+    
+    #hex-box {
+      background-color: #fff;
+      position: relative;
+      top: -15px;
+      left: -60px;
+    }
   </style>
   <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
   <link href="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/css/smoothness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
@@ -89,6 +100,20 @@ console.log(colors);
               </div>
             </div>
             <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="span3"><strong class="span1 pull-left">Hex</strong>
+                <div class="input-append">
+                  <input id="hex" type="text" name="hex" maxlength="6" class="span1">
+                  <button type="button" id="set-hex" class="btn">Set</button>
+                </div>
+              </div>
+              <div class="span1">
+                <div id="hex-box" class="color middle"></div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="span4"><small>(Note: this functions a bit differently from setting the hue above; it will create a custom variation "preset" that differs from any of the below options)</small></div>
+            </div>
+            <div class="row bordered">&nbsp;</div>
             <div class="row">
               <div class="span12"><strong class="span1">Scheme</strong>
                 <div data-toggle="buttons-radio" class="btn-group">
@@ -172,6 +197,14 @@ console.log(colors);
         }
       });
       
+      $('#hex').change(function(){
+        setHex( $('#hex').val() );
+      });
+      
+      $('#set-hex').click(function(){
+        setHex( $('#hex').val() );
+      });
+      
       $("#distance-slider").slider({
         min: 0,
         max: 1,
@@ -204,7 +237,24 @@ console.log(colors);
       scheme.from_hue(hue);
       
       var bg = scheme.colors()[0];
-      $('#hue-box').attr('style', 'background-color: #' + bg);
+      $('#hue-box').css('background-color', '#' + bg);
+      
+      $('#hex').val( bg );
+      $('#hex-box').css('background-color', '#' + bg);
+      
+      generateColors();
+    }
+    
+    function setHex(hex) {
+      // Strip possible leading hash
+      hex = hex.replace('#', '');
+      
+      console.log(hex);
+      scheme.from_hex(hex);
+      
+      var bg = scheme.colors()[0];
+      $('#hue-box').css('background-color', '#' + bg);
+      $('#hex-box').css('background-color', '#' + hex);
       
       generateColors();
     }

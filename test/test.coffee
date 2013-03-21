@@ -33,6 +33,10 @@ describe 'ColorScheme instance', ->
   it 'should be a ColorScheme object', ->
     scheme.should.be instanceof ColorScheme
 
+  it 'should have a working from_hex() method', ->
+    (() ->
+      scheme.from_hex('ff0000')
+    ).should.not.Throw()
 
 
 # scm = new ColorScheme

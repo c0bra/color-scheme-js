@@ -1,8 +1,8 @@
 
 class ColorScheme
-  # Helper function to split words up
-  splitwords = (words) ->
-    words.split /\s+/
+
+  # Helper
+  typeIsArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
 
   # List of possible color scheme types
   @SCHEMES = {};
@@ -78,42 +78,42 @@ class ColorScheme
 
     # Should these be fat arrows (=>) so that the @ refers to the right object?
     dispatch = 
-        mono     : () =>
-        contrast : () =>
-            used_colors = 2;
-            @col[1].set_hue h
-            @col[1].rotate(180)
-        
-        triade : () =>
-            used_colors = 3
-            dif = 60 * @_distance
-            @col[1].set_hue h
-            @col[1].rotate 180 - dif
-            @col[2].set_hue h
-            @col[2].rotate 180 + dif
-        
-        tetrade : () =>
-            used_colors = 4
-            dif = 90 * @_distance
-            @col[1].set_hue h
-            @col[1].rotate 180
-            @col[2].set_hue h
-            @col[2].rotate 180 + dif
-            @col[3].set_hue h
-            @col[3].rotate dif
-        
-        analogic : () =>
-            used_colors = if @_add_complement then 4 else 3
-            dif = 60 * @_distance
+      mono     : () =>
+      contrast : () =>
+        used_colors = 2;
+        @col[1].set_hue h
+        @col[1].rotate(180)
+      
+      triade : () =>
+        used_colors = 3
+        dif = 60 * @_distance
+        @col[1].set_hue h
+        @col[1].rotate 180 - dif
+        @col[2].set_hue h
+        @col[2].rotate 180 + dif
+      
+      tetrade : () =>
+        used_colors = 4
+        dif = 90 * @_distance
+        @col[1].set_hue h
+        @col[1].rotate 180
+        @col[2].set_hue h
+        @col[2].rotate 180 + dif
+        @col[3].set_hue h
+        @col[3].rotate dif
+      
+      analogic : () =>
+        used_colors = if @_add_complement then 4 else 3
+        dif = 60 * @_distance
 
-            # console.log "@col", @col
+        # console.log "@col", @col
 
-            @col[1].set_hue h
-            @col[1].rotate dif
-            @col[2].set_hue h
-            @col[2].rotate 360 - dif
-            @col[3].set_hue h
-            @col[3].rotate 180
+        @col[1].set_hue h
+        @col[1].rotate dif
+        @col[2].set_hue h
+        @col[2].rotate 360 - dif
+        @col[3].set_hue h
+        @col[3].rotate 180
     
     # Alias for monochromatic
     dispatch['monochromatic'] = dispatch['mono']
@@ -175,9 +175,39 @@ class ColorScheme
   ###
 
   from_hue: (h) ->
-      throw "variation needs an argument" if !h?
+      throw "from_hue needs an argument" if !h?
       @col[0].set_hue h
       return this # chaining
+
+  rgb2hsv: (rgb...) ->
+    # Handle being passed either a list of arguments, or an array
+    rgb = rgb[0] if rgb[0]? and typeIsArray(rgb[0])
+
+    [r, g, b] = rgb
+
+    min = Math.min [r, g, b]...
+    max = Math.max [r, g, b]...
+    d = max - min
+    v = max
+
+    s
+    if ( d > 0 )
+      s = d / max
+    else
+      return [ 0, 0, v ]
+
+    h = (
+      if (r is max) then ((g - b) / d)
+      else (
+        if (g is max) then (2 + (b - r) / d)
+        else (4 + (r - g) / d)
+      )
+    )
+
+    h *= 60
+    h %= 360
+
+    return [h, s, v]
 
   ###
 
@@ -197,32 +227,7 @@ class ColorScheme
     rgbcap = /(..)(..)(..)/.exec(hex)[1..3]
     [r, g, b] = (parseInt(num, 16) for num in rgbcap)
 
-    rgb2hsv = (r, g, b) ->
-      min = Math.min [r, g, b]...
-      max = Math.max [r, g, b]...
-      d = max - min
-      v = max
-
-      s
-      if ( d > 0 )
-        s = d / max
-      else
-        return [ 0, 0, v ]
-
-      h = (
-        if (r is max) then ((g - b) / d)
-        else (
-          if (g is max) then (2 + (b - r) / d)
-          else (4 + (r - g) / d)
-        )
-      )
-
-      h *= 60
-      h %= 360
-
-      return [h, s, v]
-
-    hsv = rgb2hsv( i / 255 for i in [r, g, b] )
+    hsv = @rgb2hsv( i / 255 for i in [r, g, b] )
     h0  = hsv[0]
     h1  = 0
     h2  = 1000
@@ -232,11 +237,11 @@ class ColorScheme
     s = null
     v = null
 
-    wheelKeys = []; wheelKeys.push i for own i of COLOR_WHEEL
+    wheelKeys = []; wheelKeys.push i for own i of ColorScheme.COLOR_WHEEL
     for i of wheelKeys.sort( (a, b) -> a - b )
-      c = ColorScheme.COLOR_WHEEL[i]
+      c = ColorScheme.COLOR_WHEEL[ wheelKeys[i] ]
       
-      hsv1 = rgb2hsv( i / 255 for i in c[ 0 .. 2 ] )
+      hsv1 = @rgb2hsv( i / 255 for i in c[ 0 .. 2 ] )
       h = hsv1[0]
       if h >= h1 and h <= h0
           h1 = h
@@ -257,9 +262,8 @@ class ColorScheme
 
     @from_hue h
     @_set_variant_preset( [ s, v, s, v * 0.7, s * 0.25, 1, s * 0.5, 1 ] )
-
+    
     return this
-
 
   ###
 
@@ -273,9 +277,9 @@ class ColorScheme
   ###
 
   add_complement: (b) ->
-      throw "add_complement needs an argument" if !b?
-      @_add_complement = b
-      return this
+    throw "add_complement needs an argument" if !b?
+    @_add_complement = b
+    return this
 
   ###
 
@@ -335,14 +339,12 @@ class ColorScheme
   ###
 
   variation: (v) ->
-    # console.log "variation(#{v})"
     throw "variation needs an argument"       unless v?
     throw "'$v' isn't a valid variation name" unless ColorScheme.PRESETS[v]?
     @_set_variant_preset ColorScheme.PRESETS[v]
     return this
 
   _set_variant_preset: (p) ->
-    # console.log "_set_variant_preset(#{p})"
     @col[i].set_variant_preset(p) for i in [0 .. 3]
 
   clone = (obj) ->
