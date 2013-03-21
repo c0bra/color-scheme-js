@@ -6,7 +6,21 @@ This library is based on the perl module [Color::Scheme](http://search.cpan.org/
 
 Check out [how it works](http://c0bra.github.com/color-scheme-js/).
 
-{:toc}
+- [Description](#description)
+- [Usage](#usage)
+- [Schemes](#schemes)
+  - [mono](#mono)
+  - [contrast](#contrast)
+  - [triade](#triade)
+  - [tetrade](#tetrade)
+  - [analogic](#analogic)
+- [Variations](#variations)
+  - [pastel](#pastel)
+  - [soft](#soft)
+  - [light](#light)
+  - [hard](#hard)
+  - [pale](#pale)
+- [Methods](#methods)
 
 ## Description
 
