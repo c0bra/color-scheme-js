@@ -6,6 +6,8 @@ This library is based on the perl module [Color::Scheme](http://search.cpan.org/
 
 Check out [how it works](http://c0bra.github.com/color-scheme-js/).
 
+{:toc}
+
 ## Description
 
 This module is a JavaScript implementation of the Perl implementation of Color Schemes
@@ -38,43 +40,47 @@ Gotta install it first:
 npm install color-scheme
 ```
 
-    var ColorScheme = require('color-scheme');
+```javascript
+var ColorScheme = require('color-scheme');
 
-    var scheme = new ColorScheme;
-    scheme.from_hue(21)         // Start the scheme 
-          .scheme('triade')     // Use the 'triade' scheme, that is, colors
-                                // selected from 3 points equidistant around
-                                // the color wheel.
-          .variation('soft');   // Use the 'soft' color variation
+var scheme = new ColorScheme;
+scheme.from_hue(21)         // Start the scheme 
+      .scheme('triade')     // Use the 'triade' scheme, that is, colors
+                            // selected from 3 points equidistant around
+                            // the color wheel.
+      .variation('soft');   // Use the 'soft' color variation
 
-    var colors = scheme.colors();
+var colors = scheme.colors();
 
-    /*
-      colors = [ "e69373", "805240", "e6d5cf", "bf5830" ,
-                 "77d36a", "488040", "d2e6cf", "43bf30" ,
-                 "557aaa", "405c80", "cfd9e6", "306ebf" ]
-    */
+/*
+  colors = [ "e69373", "805240", "e6d5cf", "bf5830" ,
+             "77d36a", "488040", "d2e6cf", "43bf30" ,
+             "557aaa", "405c80", "cfd9e6", "306ebf" ]
+*/
+```
 
 ### In the browser
 
-    <script src="wherever/your/installed/color-scheme.js"></script>
+```html
+<script src="wherever/your/installed/color-scheme.js"></script>
 
-    <script>
-      // Pretty much the same exact syntax!
-      var scheme = new ColorScheme;
-      scheme.from_hue(21)         
-            .scheme('triade')   
-            .variation('soft');
+<script>
+  // Pretty much the same exact syntax!
+  var scheme = new ColorScheme;
+  scheme.from_hue(21)         
+        .scheme('triade')   
+        .variation('soft');
 
 
-      var colors = scheme.colors();
+  var colors = scheme.colors();
 
-      /*
-        colors = [ "e69373", "805240", "e6d5cf", "bf5830" ,
-                   "77d36a", "488040", "d2e6cf", "43bf30" ,
-                   "557aaa", "405c80", "cfd9e6", "306ebf" ]
-      */
-    <script>
+  /*
+    colors = [ "e69373", "805240", "e6d5cf", "bf5830" ,
+               "77d36a", "488040", "d2e6cf", "43bf30" ,
+               "557aaa", "405c80", "cfd9e6", "306ebf" ]
+  */
+<script>
+```
 
 ## Schemes
 
@@ -124,37 +130,49 @@ These variations will alter the produced colors. They basically work exactly lik
 
 The default variation. No change to the colors.
 
-    s.variation('default');
+```javascript
+s.variation('default');
+```
 
 ### pastel
 
 Produces pastel colors, which have in HSV high value and low-intermediate saturation.
 
-    s.variation('pastel');
+```javascript
+s.variation('pastel');
+```
 
 ### soft
 
 Produces darker pastel colors.
 
-    s.variation('soft');
+```javascript
+s.variation('soft');
+```
 
 ### light
 
 Very light, almost washed-out colors.
 
-    s.variation('light');
+```javascript
+s.variation('light');
+```
 
 ### hard
 
 Deeper, very saturated colors.
 
-    s.variation('hard');
+```javascript
+s.variation('hard');
+```
 
 ### pale
 
 Colors with more gray; less saturated.
 
-    s.variation('pale');
+```javascript
+s.variation('pale');
+```
 
 ## Methods
 
@@ -164,10 +182,12 @@ ColorScheme instances use method chaining to alter settings.
 
 Set the scheme to [scheme_name]. The possible values are 'mono', 'contrast', 'triade', 'tetrade', and 'analogic'.
 
-    var s = new ColorScheme
+```javascript
+var s = new ColorScheme
 
-    // Set the scheme to analogic
-    s.scheme('analogic');
+// Set the scheme to analogic
+s.scheme('analogic');
+```
 
 ### distance([float])
 
@@ -175,14 +195,18 @@ Set the scheme to [scheme_name]. The possible values are 'mono', 'contrast', 'tr
 
 This method sets the distance of the additional source colors from the initial hue. The value must be a float from 0 to 1.
 
-    var s = new ColorScheme;
-    var colors = s.scheme('triade')
-     .distance(0.75)
-     .colors();
+```javascript
+var s = new ColorScheme;
+var colors = s.scheme('triade')
+ .distance(0.75)
+ .colors();
 
-    # colors = [ "ff9900", "b36b00", "ffe6bf", "ffcc80",
-                 "00b366", "007d48", "bfffe4", "80ffc9",
-                 "400099", "2d006b", "dabfff", "b580ff" ]
+/*
+  colors = [ "ff9900", "b36b00", "ffe6bf", "ffcc80",
+             "00b366", "007d48", "bfffe4", "80ffc9",
+             "400099", "2d006b", "dabfff", "b580ff" ]
+*/
+```
 
 ### complement([bool])
 
@@ -193,3 +217,7 @@ Add complementary colors to the ```analogic``` scheme. Does not work with any ot
 Returns the array of generated colors as hex values.
 
 **Note:** Because this method returns the colors, it obviously *cannot* be chained afterwards.
+
+```javascript
+var colors = s.colors()
+```
