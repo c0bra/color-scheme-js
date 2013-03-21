@@ -6,6 +6,10 @@ This library is based on the perl module [Color::Scheme](http://search.cpan.org/
 
 Check out [how it works](http://c0bra.github.com/color-scheme-js/).
 
+Get the [minified file](https://raw.github.com/c0bra/color-scheme-js/master/lib/color-scheme.min.js) (8kb).
+
+Or for some reason, you could use the [full file](https://raw.github.com/c0bra/color-scheme-js/master/lib/color-scheme.js) (18kb).
+
 ## Table of Contents
 
 - [Description](#description)
