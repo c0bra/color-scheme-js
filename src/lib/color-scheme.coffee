@@ -325,10 +325,12 @@ class ColorScheme
   ###
 
   scheme: (name) ->
-    throw "scheme needs an argument"          unless name?
-    throw "'#{name}' isn't a valid scheme name" unless ColorScheme.SCHEMES[name]?
-    @_scheme = name
-    return this
+    if !name?
+      return @_scheme
+    else
+      throw "'#{name}' isn't a valid scheme name" unless ColorScheme.SCHEMES[name]?
+      @_scheme = name
+      return this
 
   ###
 

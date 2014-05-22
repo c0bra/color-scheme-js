@@ -29,6 +29,7 @@
     "coffee-script": "",
     "uglify-js": "",
     "mocha": "",
-    "chai": ""
+    "chai": "",
+    "which": "^1.0.5"
   }
 }

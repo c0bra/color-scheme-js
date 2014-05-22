@@ -1,5 +1,4 @@
 
-eyes = require 'eyes'
 chai = require 'chai'
 chai.should()
 
@@ -26,6 +25,21 @@ describe 'ColorScheme class', ->
   describe 'COLOR_WHEEL object', ->
     it 'should exist', ->
       ColorScheme.COLOR_WHEEL.should.exist
+
+  describe 'scheme()', ->
+    s = null
+    beforeEach ->
+      s = new ColorScheme
+
+    it 'should not throw with no argument', ->
+      (() ->
+        s.scheme()
+      ).should.not.throw()
+    it 'should return the current scheme', ->
+      s.scheme 'mono'
+      ret = s.scheme()
+      ret.should.equal 'mono'
+      ret.should.equal s._scheme
 
 
 describe 'ColorScheme instance', ->

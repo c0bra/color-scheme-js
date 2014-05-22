@@ -16,7 +16,6 @@ task 'build', 'Build this module', ->
 task 'minify', 'Minify the compiled javascript source', ->
   minify()
 
-
 compile = (callback) ->
   console.log "Compiling..."
 
@@ -38,7 +37,7 @@ compile = (callback) ->
 test = (callback) ->
   console.log "Testing..."
 
-  child = exec '"node_modules/.bin/mocha" --compilers coffee:coffee-script test', (err, stdout, stderr) ->
+  child = exec '"node_modules/.bin/mocha" --reporter list --compilers coffee:coffee-script/register test', (err, stdout, stderr) ->
     # console.log stdout
     # console.log stderr
 
