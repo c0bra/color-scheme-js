@@ -52,6 +52,11 @@ describe 'ColorScheme instance', ->
       scheme.from_hex('ff0000')
     ).should.not.Throw()
 
+  it ' from_hex() should not throw with ', ->
+    (() ->
+      scheme.from_hex('ad1457')
+    ).should.not.Throw()
+
 
 # scm = new ColorScheme
 

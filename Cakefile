@@ -24,7 +24,7 @@ compile = (callback) ->
     fs.mkdirSync "lib"
 
   # Compile the library
-  child = exec '"node_modules/.bin/coffee" -o lib ./src/lib/color-scheme.coffee', (err, stdout, stderr) ->
+  child = exec '"node_modules/.bin/coffee" -m -o lib ./src/lib/color-scheme.coffee', (err, stdout, stderr) ->
     if err?
       throw err
     else

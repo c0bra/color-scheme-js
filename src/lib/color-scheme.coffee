@@ -206,6 +206,8 @@ class ColorScheme
 
     h *= 60
     h %= 360
+    if (h < 0)
+      h = 360 - h
 
     return [h, s, v]
 
