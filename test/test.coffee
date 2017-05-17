@@ -57,6 +57,13 @@ describe 'ColorScheme instance', ->
       scheme.from_hex('ad1457')
     ).should.not.Throw()
 
+describe 'from_hex', ->
+  scheme = new ColorScheme
+
+  it.only 'should select the correct hue', ->
+    scheme.from_hex('00ff00')
+    scheme.col[0].hue.should.equal 180
+
 
 # scm = new ColorScheme
 

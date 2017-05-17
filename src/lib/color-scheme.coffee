@@ -7,7 +7,7 @@ class ColorScheme
   # List of possible color scheme types
   @SCHEMES = {};
   @SCHEMES[word] = true for word in "mono monochromatic contrast triade tetrade analogic".split /\s+/
-  
+
   @PRESETS =
     default : [ -1,   -1,    1,   -0.7, 0.25, 1,   0.5,  1 ],
     pastel  : [ 0.5,  -0.9,  0.5, 0.5,  0.1,  0.9, 0.75, 0.75 ]
@@ -62,7 +62,7 @@ class ColorScheme
   (without a leading "#") depending on the color scheme and addComplement
   parameter. For each set of four, the first is usually the most saturated color,
   the second a darkened version, the third a pale version and fourth
-  a less-pale version. 
+  a less-pale version.
 
   For example: With a contrast scheme, "colors()" would return eight colors.
   Indexes 1 and 5 could be background colors, 2 and 6 could be foreground colors.
@@ -77,13 +77,13 @@ class ColorScheme
     h           = @col[0].get_hue()
 
     # Should these be fat arrows (=>) so that the @ refers to the right object?
-    dispatch = 
+    dispatch =
       mono     : () =>
       contrast : () =>
         used_colors = 2;
         @col[1].set_hue h
         @col[1].rotate(180)
-      
+
       triade : () =>
         used_colors = 3
         dif = 60 * @_distance
@@ -91,7 +91,7 @@ class ColorScheme
         @col[1].rotate 180 - dif
         @col[2].set_hue h
         @col[2].rotate 180 + dif
-      
+
       tetrade : () =>
         used_colors = 4
         dif = 90 * @_distance
@@ -101,7 +101,7 @@ class ColorScheme
         @col[2].rotate 180 + dif
         @col[3].set_hue h
         @col[3].rotate dif
-      
+
       analogic : () =>
         used_colors = if @_add_complement then 4 else 3
         dif = 60 * @_distance
@@ -114,7 +114,7 @@ class ColorScheme
         @col[2].rotate 360 - dif
         @col[3].set_hue h
         @col[3].rotate 180
-    
+
     # Alias for monochromatic
     dispatch['monochromatic'] = dispatch['mono']
 
@@ -190,6 +190,8 @@ class ColorScheme
     d = max - min
     v = max
 
+    # console.log "minmax", min, max, d, v
+
     s
     if ( d > 0 )
       s = d / max
@@ -206,8 +208,40 @@ class ColorScheme
 
     h *= 60
     h %= 360
-    if (h < 0)
-      h = 360 - h
+
+    # if (h < 0)
+    #   h = 360 - h
+
+    console.log 'HSV', h, s, v
+
+    return [h, s, v]
+
+  rgbToHsv: (rgb...) ->
+    rgb = rgb[0] if rgb[0]? and typeIsArray(rgb[0])
+    [r, g, b] = rgb
+
+    r /= 255
+    g /= 255
+    b /= 255
+    max = Math.max(r, g, b)
+    min = Math.min(r, g, b)
+    h = undefined
+    s = undefined
+    v = max
+    d = max - min
+    s = if max == 0 then 0 else d / max
+    if max == min
+      h = 0
+      # achromatic
+    else
+      switch max
+        when r
+          h = (g - b) / d + (if g < b then 6 else 0)
+        when g
+          h = (b - r) / d + 2
+        when b
+          h = (r - g) / d + 4
+      h /= 6
 
     return [h, s, v]
 
@@ -223,13 +257,16 @@ class ColorScheme
   ###
 
   from_hex: (hex) ->
+    # console.log 'HEX', hex
+
     throw "from_hex needs an argument" if !hex?
     throw "from_hex(#{hex}) - argument must be in the form of RRGGBB" unless /// ^ ( [0-9A-F]{2} ) {3} $ ///im.test(hex)
 
     rgbcap = /(..)(..)(..)/.exec(hex)[1..3]
     [r, g, b] = (parseInt(num, 16) for num in rgbcap)
 
-    hsv = @rgb2hsv( i / 255 for i in [r, g, b] )
+    hsv = @rgbToHsv( i / 255 for i in [r, g, b] )
+    console.log 'HSV', hsv
     h0  = hsv[0]
     h1  = 0
     h2  = 1000
@@ -242,8 +279,8 @@ class ColorScheme
     wheelKeys = []; wheelKeys.push i for own i of ColorScheme.COLOR_WHEEL
     for i of wheelKeys.sort( (a, b) -> a - b )
       c = ColorScheme.COLOR_WHEEL[ wheelKeys[i] ]
-      
-      hsv1 = @rgb2hsv( i / 255 for i in c[ 0 .. 2 ] )
+
+      hsv1 = @rgbToHsv( i / 255 for i in c[ 0 .. 2 ] )
       h = hsv1[0]
       if h >= h1 and h <= h0
           h1 = h
@@ -258,13 +295,16 @@ class ColorScheme
 
     k = if ( h2 != h1 ) then ( h0 - h1 ) / ( h2 - h1 ) else 0
     h = Math.round( i1 + k * ( i2 - i1 ) )
+    # console.log 'HUE', h
     h %= 360
     s = hsv[1]
     v = hsv[2]
 
+    # console.log 'HUE', h
+
     @from_hue h
     @_set_variant_preset( [ s, v, s, v * 0.7, s * 0.25, 1, s * 0.5, 1 ] )
-    
+
     return this
 
   ###
@@ -272,7 +312,7 @@ class ColorScheme
   add_complement( BOOLEAN )
 
   If BOOLEAN is true, an extra set of colors will be produced using the
-  complement of the selected color. 
+  complement of the selected color.
 
   This only works with the analogic color scheme. The default is false.
 
@@ -288,7 +328,7 @@ class ColorScheme
   web_safe( BOOL )
 
   Sets whether the colors returned by L<"colors()"> or L<"colorset()"> will be
-  web-safe. 
+  web-safe.
 
   The default is false.
 
@@ -338,7 +378,7 @@ class ColorScheme
 
   variation( name )
 
-  'name' must be a valid color variation name. See "Color Variations" 
+  'name' must be a valid color variation name. See "Color Variations"
 
   ###
 
@@ -356,7 +396,7 @@ class ColorScheme
       return obj
 
     if obj instanceof Date
-      return new Date(obj.getTime()) 
+      return new Date(obj.getTime())
 
     if obj instanceof RegExp
       flags = ''
@@ -364,7 +404,7 @@ class ColorScheme
       flags += 'i' if obj.ignoreCase?
       flags += 'm' if obj.multiline?
       flags += 'y' if obj.sticky?
-      return new RegExp(obj.source, flags) 
+      return new RegExp(obj.source, flags)
 
     newInstance = new obj.constructor()
 

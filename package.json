@@ -1,10 +1,10 @@
 {
   "name": "color-scheme",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Generate pleasant color schemes",
   "main": "lib/color-scheme.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script",
+    "test": "mocha --compilers coffee:coffee-script/register",
     "prepublish": "cake build"
   },
   "repository": {
