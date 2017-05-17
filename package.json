@@ -1,6 +1,6 @@
 {
   "name": "color-scheme",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Generate pleasant color schemes",
   "main": "lib/color-scheme.js",
   "scripts": {
@@ -26,10 +26,10 @@
   "license": "BSD",
   "dependencies": {},
   "devDependencies": {
-    "coffee-script": "",
-    "uglify-js": "",
-    "mocha": "",
-    "chai": "",
+    "coffee-script": "^1.12.6",
+    "uglify-js": "^2.7.5",
+    "mocha": "^3.2.0",
+    "chai": "^3.5.0",
     "which": "^1.0.5"
   }
 }

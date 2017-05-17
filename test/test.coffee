@@ -52,10 +52,16 @@ describe 'ColorScheme instance', ->
       scheme.from_hex('ff0000')
     ).should.not.Throw()
 
-  it ' from_hex() should not throw with ', ->
+  it 'from_hex() should not throw with a good value', ->
     (() ->
       scheme.from_hex('ad1457')
     ).should.not.Throw()
+
+describe 'rgb2hsv', ->
+  scheme = new ColorScheme
+
+  it.only 'should convert rgb values to hsv properly', ->
+    scheme.rgbToHsv(0, 255, 0).should.eql [1/3, 1, 1]
 
 describe 'from_hex', ->
   scheme = new ColorScheme
