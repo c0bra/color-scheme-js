@@ -23,7 +23,7 @@
     "web"
   ],
   "author": "Brian Hann",
-  "license": "BSD",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "coffee-script": "^1.12.6",
