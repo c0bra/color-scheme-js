@@ -55,6 +55,7 @@ describe 'ColorScheme instance', ->
   it 'from_hex() should not throw with a good value', ->
     (() ->
       scheme.from_hex('ad1457')
+      scheme.from_hex('790001')
     ).should.not.Throw()
 
 describe 'rgb2hsv', ->

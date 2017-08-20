@@ -69,7 +69,8 @@ describe('ColorScheme instance', function() {
   });
   return it(' from_hex() should not throw with ', function() {
     return (function() {
-      return scheme.from_hex('ad1457');
+      scheme.from_hex('ad1457');
+      return scheme.from_hex('790001');
     }).should.not.Throw();
   });
 });

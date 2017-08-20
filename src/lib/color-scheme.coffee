@@ -511,8 +511,15 @@ class ColorScheme
 
       derivative1 = @hue - Math.floor(d)
       derivative2 = ( derivative1 + 15 ) % 360
-      colorset1   = ColorScheme.COLOR_WHEEL[derivative1]
-      colorset2   = ColorScheme.COLOR_WHEEL[derivative2]
+
+      if derivative1 == 360
+        derivative1 = 0
+
+      if derivative2 == 360
+        derivative2 = 0
+
+      colorset1 = ColorScheme.COLOR_WHEEL[derivative1]
+      colorset2 = ColorScheme.COLOR_WHEEL[derivative2]
 
       en =
         red: 0
