@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "Generate pleasant color schemes",
   "main": "lib/color-scheme.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register",
     "prepublish": "cake build"
