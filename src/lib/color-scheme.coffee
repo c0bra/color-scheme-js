@@ -597,4 +597,4 @@ else
     define [], () ->
       return ColorScheme
   else
-    window.ColorScheme = ColorScheme
+    self.ColorScheme = ColorScheme
